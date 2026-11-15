@@ -1,0 +1,17 @@
+{
+  "name": "AANGAN (आँगन) - Elderly Care",
+  "short_name": "Aangan",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FFF8EC",
+  "theme_color": "#C4572E",
+  "description": "Digital pillbox + family courtyard centered around the elder",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
