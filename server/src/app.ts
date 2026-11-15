@@ -2,7 +2,13 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { CONFIG } from './config.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const clientDistPath = path.resolve(__dirname, '../../client/dist');
 import { authRouter } from './routes/auth.js';
 import { membersRouter } from './routes/members.js';
 import { medicinesRouter } from './routes/medicines.js';
@@ -60,6 +66,18 @@ app.use('/api/dadi', dadiRouter);
 app.use('/api/insights', insightsRouter);
 app.use('/api/audit', auditRouter);
 app.use('/api/demo', demoRouter);
+
+// Serve static frontend assets in production
+app.use(express.static(clientDistPath));
+
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api') || req.path === '/health') {
+    return next();
+  }
+  res.sendFile(path.join(clientDistPath, 'index.html'), (err) => {
+    if (err) next();
+  });
+});
 
 // Global error handler
 app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {

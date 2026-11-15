@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
-import { DadiVoiceModal } from '../components/DadiVoiceModal.js';
-import { Mic } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { api } from '../api/client.js';
 import { useAuth } from '../context/AuthContext.js';
 import { useLanguage } from '../context/LanguageContext.js';
 import { KolamPattern } from '../components/KolamPattern.js';
 import { LanguageSwitcher } from '../components/LanguageSwitcher.js';
+import { DadiVoiceModal } from '../components/DadiVoiceModal.js';
 import { DEFAULT_AVATARS } from '@aangan/shared';
-import { Heart, Sparkles, KeyRound, PlusCircle, ArrowRight } from 'lucide-react';
+import { Heart, Sparkles, KeyRound, PlusCircle, ArrowRight, Mic } from 'lucide-react';
 
 export const LandingPage: React.FC = () => {
   const [mode, setMode] = useState<'home' | 'join' | 'create'>('home');
   const [joinCode, setJoinCode] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showDadi, setShowDadi] = useState(false);
 
   // Create form state
   const [circleName, setCircleName] = useState('');
@@ -101,8 +102,16 @@ export const LandingPage: React.FC = () => {
       {/* Kolam Pattern Header */}
       <KolamPattern />
 
-      {/* Language Switcher Bar */}
-      <div className="flex justify-end pt-2 pb-1">
+      {/* Top Controls: Dadi Voice Assistant & 3-Language Button */}
+      <div className="flex justify-end items-center gap-2 pt-2 pb-1">
+        <button
+          onClick={() => setShowDadi(true)}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-20 bg-saffron/20 hover:bg-saffron/30 text-deepOlive border border-saffron/40 font-bold text-xs sm:text-sm transition-all shadow-sm active:scale-95"
+          title="Dadi Voice Assistant"
+        >
+          <Mic className="w-4 h-4 text-terracotta" />
+          <span className="font-heading">दादी (Dadi)</span>
+        </button>
         <LanguageSwitcher size="sm" />
       </div>
 
@@ -330,6 +339,12 @@ export const LandingPage: React.FC = () => {
       <footer className="text-center text-xs text-zinc-500 py-4">
         Aangan Platform • Designed for Solo AI Hackathon • 100% Elder Centered
       </footer>
+
+      {/* Dadi Voice Assistant Modal */}
+      <DadiVoiceModal
+        isOpen={showDadi}
+        onClose={() => setShowDadi(false)}
+      />
     </div>
   );
 };
